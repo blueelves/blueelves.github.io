@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07070d">
+  <meta name="color-scheme" content="dark">
+
+  <title>双指针：从两数之和到三数之和 · Blue</title>
+  <meta name="description" content="blueelves 的个人博客 —— 编程笔记、技术折腾与日常思考">
+  <meta name="keywords" content="编程, C++, Python, 算法, 笔记, 技术博客">
+  <meta name="author" content="blueelves">
+  <link rel="canonical" href="https://blueelves.github.io/2026/09/26/two-pointers/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="双指针：从两数之和到三数之和 · Blue">
+  <meta property="og:description" content="blueelves 的个人博客 —— 编程笔记、技术折腾与日常思考">
+  <meta property="og:url" content="https://blueelves.github.io/2026/09/26/two-pointers/">
+  <meta property="og:site_name" content="Blue">
+
+  <!-- 图标（内置霓虹 SVG，无需外部资源） -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- 样式 -->
+  <link rel="stylesheet" href="/css/neon.css">
+
+  <!-- 主题主色注入 -->
+  <style>:root{--accent:#00f0ff;}</style>
+
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body class="is-post">
+
+  <!-- 背景层：网格 + 光晕 -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-aurora" aria-hidden="true">
+    <span class="aurora aurora-1"></span>
+    <span class="aurora aurora-2"></span>
+    <span class="aurora aurora-3"></span>
+  </div>
+
+  <header class="site-header" id="site-header">
+  <div class="wrap header-inner">
+
+    <a class="brand" href="/" aria-label="Blue 首页">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-text">Blue</span>
+    </a>
+
+    <nav class="nav" id="site-nav" aria-label="主导航">
+      
+        <a class="nav-link" href="/">首页</a>
+      
+        <a class="nav-link" href="/archives/">归档</a>
+      
+        <a class="nav-link" href="/categories/">分类</a>
+      
+        <a class="nav-link" href="/tags/">标签</a>
+      
+        <a class="nav-link" href="/about/">关于</a>
+      
+    </nav>
+
+    <button class="nav-toggle" id="nav-toggle" aria-label="打开菜单" aria-expanded="false" aria-controls="site-nav">
+      <span></span><span></span><span></span>
+    </button>
+
+  </div>
+</header>
+
+
+  <main class="main" id="main">
+    <div class="wrap">
+      
+
+<article class="post">
+
+  <header class="post-header">
+    <p class="post-kicker"><span class="prompt">&gt;</span> article</p>
+    <h1 class="post-title">双指针：从两数之和到三数之和</h1>
+
+    <div class="post-meta">
+      <time datetime="2026-09-26T13:00:00.000Z">2026.09.26</time>
+      <span class="dot">·</span>
+      <span>2454 字 · 约 7 分钟</span>
+      
+        <span class="dot">·</span>
+        <span class="post-cats">
+          <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+        </span>
+      
+      
+        <span class="dot">·</span>
+        <span class="post-updated">更新于 2026.09.27</span>
+      
+    </div>
+  </header>
+
+  
+    <details class="toc" open>
+      <summary><span class="toc-icon">≡</span> 目录</summary>
+      <div class="toc-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3"><span class="toc-text">一、核心思想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E6%A0%B7%E4%B8%8D%E4%BC%9A%E6%BC%8F%E8%A7%A3"><span class="toc-text">二、为什么这样不会漏解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81C-%E5%AE%9E%E7%8E%B0"><span class="toc-text">三、C++ 实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%88%91%E8%B8%A9%E8%BF%87%E7%9A%84%E4%B8%89%E4%B8%AA%E5%9D%91"><span class="toc-text">四、我踩过的三个坑</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%91-1%EF%BC%9A%E5%8F%98%E9%87%8F%E5%90%8D%E5%92%8C%E8%BA%AB%E4%BB%BD%E5%AF%B9%E4%B8%8D%E4%B8%8A"><span class="toc-text">坑 1：变量名和身份对不上</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%91-2%EF%BC%9Awhile-%E6%9D%A1%E4%BB%B6%E8%AE%A9%E5%BE%AA%E7%8E%AF%E4%B8%80%E6%AC%A1%E9%83%BD%E4%B8%8D%E6%89%A7%E8%A1%8C"><span class="toc-text">坑 2：while 条件让循环一次都不执行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%91-3%EF%BC%9A%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C%E9%87%8C%E4%B8%89%E4%B8%AA%E5%88%86%E6%94%AF%E5%85%A8%E4%B8%8D%E6%88%90%E7%AB%8B-%E2%86%92-%E6%AD%BB%E5%BE%AA%E7%8E%AF"><span class="toc-text">坑 3：三数之和里三个分支全不成立 → 死循环</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%89%A9%E5%B1%95%E5%88%B0%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C"><span class="toc-text">五、扩展到三数之和</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%AF%B9%E6%AF%94"><span class="toc-text">六、复杂度对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-text">小结</span></a></li></ol></div>
+    </details>
+  
+
+  <div class="post-content" id="post-content">
+    <p>在一个<strong>有序数组</strong>里找出两个数，让它们的和等于目标值——这是双指针最经典的入门题。把这题吃透，三数之和、盛最多水的容器、接雨水都能顺着推出来。</p>
+<h2 id="一、核心思想"><a href="#一、核心思想" class="headerlink" title="一、核心思想"></a>一、核心思想</h2><p>数组有序，这是双指针能用的<strong>前提</strong>。设左指针 <code>l</code> 指向最小的数，右指针 <code>r</code> 指向最大的数：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">numbers = [ 2,  7, 11, 15, 19 ]</span><br><span class="line">下标      0   1   2   3   4</span><br><span class="line">          ↑               ↑</span><br><span class="line">        l=0             r=4</span><br></pre></td></tr></table></figure>
+
+<p>每一步都比较 <code>numbers[l] + numbers[r]</code> 和目标值：</p>
+<table>
+<thead>
+<tr>
+<th>比较结果</th>
+<th>含义</th>
+<th>动作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>sum &lt; target</code></td>
+<td>和太小</td>
+<td><code>l++</code> 换一个<strong>更大</strong>的数</td>
+</tr>
+<tr>
+<td><code>sum &gt; target</code></td>
+<td>和太大</td>
+<td><code>r--</code> 换一个<strong>更小</strong>的数</td>
+</tr>
+<tr>
+<td><code>sum == target</code></td>
+<td>命中</td>
+<td>返回</td>
+</tr>
+</tbody></table>
+<h2 id="二、为什么这样不会漏解"><a href="#二、为什么这样不会漏解" class="headerlink" title="二、为什么这样不会漏解"></a>二、为什么这样不会漏解</h2><p>关键在于<strong>单调性</strong>：</p>
+<ul>
+<li>如果 <code>numbers[l] + numbers[r] &lt; target</code>，因为数组递增，对<strong>同一个 <code>l</code></strong> 而言，<code>r</code> 再往左走只会让和更小，<strong>永远不可能等于 target</strong>。所以 <code>l</code> 这个位置可以彻底排除，只能 <code>l++</code>。</li>
+<li>反之，如果和太大，对<strong>同一个 <code>r</code></strong> 来说，<code>l</code> 往右走只会让和更大，也不可能命中，所以只能 <code>r--</code>。</li>
+</ul>
+<p><strong>每个分支至少排除一个不可能的下标</strong>，所以循环最多走 n 步：时间 O(n)，额外空间 O(1)。</p>
+<h2 id="三、C-实现"><a href="#三、C-实现" class="headerlink" title="三、C++ 实现"></a>三、C++ 实现</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">twoSum</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; numbers, <span class="type">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> l = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> r = (<span class="type">int</span>)numbers.<span class="built_in">size</span>() - <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (l &lt; r) &#123;</span><br><span class="line">            <span class="type">int</span> sum = numbers[l] + numbers[r];</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (sum == target) &#123;</span><br><span class="line">                <span class="keyword">return</span> &#123;l + <span class="number">1</span>, r + <span class="number">1</span>&#125;;   <span class="comment">// 题目要求 1-indexed</span></span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (sum &lt; target) &#123;</span><br><span class="line">                l++;                      <span class="comment">// 和偏小 → 左指针右移</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                r--;                      <span class="comment">// 和偏大 → 右指针左移</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> &#123;&#125;;                        <span class="comment">// 兜底：所有路径都要有返回值</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>几个容易忽略的细节：</p>
+<ul>
+<li><code>vector&lt;int&gt;&amp; numbers</code> 的 <code>&amp;</code> 是<strong>引用</strong>，不加就会把整个数组拷贝一遍</li>
+<li><code>{l + 1, r + 1}</code> 是<strong>列表初始化</strong>，直接在原地构造 vector；写成 <code>(l + 1, r + 1)</code> 就变成逗号表达式了，只返回最后一个值</li>
+<li><code>return {}</code> 不是为了逻辑，而是为了<strong>让所有分支都有返回值</strong>，否则属于未定义行为</li>
+</ul>
+<h2 id="四、我踩过的三个坑"><a href="#四、我踩过的三个坑" class="headerlink" title="四、我踩过的三个坑"></a>四、我踩过的三个坑</h2><h3 id="坑-1：变量名和身份对不上"><a href="#坑-1：变量名和身份对不上" class="headerlink" title="坑 1：变量名和身份对不上"></a>坑 1：变量名和身份对不上</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// ❌ 反面教材</span></span><br><span class="line"><span class="type">int</span> sum = <span class="number">0</span>;                              <span class="comment">// 其实是左指针</span></span><br><span class="line"><span class="type">int</span> left = <span class="keyword">sizeof</span> n / <span class="keyword">sizeof</span> n[<span class="number">0</span>] - <span class="number">1</span>;    <span class="comment">// 其实是右指针</span></span><br><span class="line"><span class="type">int</span> num = n[sum] + n[left];               <span class="comment">// 这个才是&quot;和&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>程序能跑，但读的人（包括三天后的自己）会完全懵：为什么 <code>sum</code> 能当数组下标？</p>
+<p><strong>修法</strong>：左指针就叫 <code>left</code>，右指针就叫 <code>right</code>，和就叫 <code>sum</code>。</p>
+<h3 id="坑-2：while-条件让循环一次都不执行"><a href="#坑-2：while-条件让循环一次都不执行" class="headerlink" title="坑 2：while 条件让循环一次都不执行"></a>坑 2：<code>while</code> 条件让循环一次都不执行</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a; cin &gt;&gt; a;</span><br><span class="line"><span class="type">int</span> b = a;              <span class="comment">// b 和 a 相等</span></span><br><span class="line"><span class="keyword">while</span> (a &lt; b) &#123; ... &#125;   <span class="comment">// ❌ 条件一开始就是假，循环体一次都不跑</span></span><br></pre></td></tr></table></figure>
+
+<p>这是把<strong>输入值</strong>和<strong>指针</strong>用了同一个变量。结果是程序对所有合数都输出”是质数”——因为压根没检查。</p>
+<h3 id="坑-3：三数之和里三个分支全不成立-→-死循环"><a href="#坑-3：三数之和里三个分支全不成立-→-死循环" class="headerlink" title="坑 3：三数之和里三个分支全不成立 → 死循环"></a>坑 3：三数之和里三个分支全不成立 → 死循环</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (target == num + n[right]) &#123; ... &#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (target &lt; num + right) &#123; ... &#125;   <span class="comment">// ❌ 少写了 n[]</span></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (target &gt; num + right) &#123; ... &#125;   <span class="comment">// ❌ 少写了 n[]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>if</code> 里比较的是 <code>num + n[right]</code>，<code>else if</code> 里比较的却是 <code>num + right</code>（<strong>下标</strong>而不是数组元素）。两个量叉开了 1，就制造出一个”三个条件都不满足”的空隙——循环体什么都不做，指针不动，<strong>死循环</strong>。</p>
+<blockquote>
+<p><strong>教训</strong>：<code>==</code>、<code>&lt;</code>、<code>&gt;</code> 本来应该穷尽所有可能。最后一个分支直接写 <code>else</code>，就从语法上杜绝了这类空隙。</p>
+</blockquote>
+<h2 id="五、扩展到三数之和"><a href="#五、扩展到三数之和" class="headerlink" title="五、扩展到三数之和"></a>五、扩展到三数之和</h2><p>思路是”<strong>固定一个数 + 在剩余区间上跑双指针</strong>“：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">threeSum</span>(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> target) &#123;</span><br><span class="line">    <span class="built_in">sort</span>(nums.<span class="built_in">begin</span>(), nums.<span class="built_in">end</span>());          <span class="comment">// 必须先排序</span></span><br><span class="line">    <span class="type">int</span> n = nums.<span class="built_in">size</span>();</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; res;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">2</span>; i++) &#123;        <span class="comment">// 固定 nums[i]</span></span><br><span class="line">        <span class="type">int</span> l = i + <span class="number">1</span>;                        <span class="comment">// 每轮都重置指针</span></span><br><span class="line">        <span class="type">int</span> r = n - <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (l &lt; r) &#123;</span><br><span class="line">            <span class="type">int</span> sum = nums[i] + nums[l] + nums[r];</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (sum == target) &#123;</span><br><span class="line">                res.<span class="built_in">push_back</span>(&#123;nums[i], nums[l], nums[r]&#125;);</span><br><span class="line">                l++;                          <span class="comment">// 命中后必须移动，否则死循环</span></span><br><span class="line">                r--;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (sum &lt; target) &#123;</span><br><span class="line">                l++;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                r--;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>三点必须注意：</p>
+<ol>
+<li><strong>每换一个 <code>i</code>，<code>l</code> 和 <code>r</code> 都要重置</strong></li>
+<li><strong>命中后必须移动指针</strong>，不然原地打转</li>
+<li><strong>数组必须先排序</strong>，双指针依赖有序</li>
+</ol>
+<h2 id="六、复杂度对比"><a href="#六、复杂度对比" class="headerlink" title="六、复杂度对比"></a>六、复杂度对比</h2><table>
+<thead>
+<tr>
+<th>题目</th>
+<th>暴力</th>
+<th>双指针</th>
+<th>额外空间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>两数之和（有序）</td>
+<td>O(n²)</td>
+<td><strong>O(n)</strong></td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>三数之和</td>
+<td>O(n³)</td>
+<td><strong>O(n²)</strong></td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>四数之和</td>
+<td>O(n⁴)</td>
+<td><strong>O(n³)</strong></td>
+<td>O(1)</td>
+</tr>
+</tbody></table>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>记住这几句话就够了：</p>
+<ul>
+<li><strong>和偏小 → 左指针右移；和偏大 → 右指针左移</strong></li>
+<li><strong>前提是数组有序</strong></li>
+<li><strong>多轮双指针，每轮都要重置指针</strong></li>
+<li><strong>命中后一定要移动指针</strong></li>
+<li><strong>条件如果本应穷尽，最后一个分支就写 <code>else</code></strong></li>
+</ul>
+<hr>
+<p><em>本文由「Blue」整理，代码可直接编译运行。</em></p>
+
+  </div>
+
+  
+    <div class="post-tags">
+      
+        <a class="tag" href="/tags/C/">#C++</a>
+      
+        <a class="tag" href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
+      
+        <a class="tag" href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88/">#双指针</a>
+      
+    </div>
+  
+
+  <nav class="post-nav" aria-label="上下篇">
+    
+      <a class="post-nav-item prev" href="/2026/09/27/hello-neon/">
+        <span class="post-nav-label">← 上一篇</span>
+        <span class="post-nav-title">你好，霓虹</span>
+      </a>
+    
+
+    
+      <a class="post-nav-item next" href="/2026/09/20/hexo-github-pages/">
+        <span class="post-nav-label">下一篇 →</span>
+        <span class="post-nav-title">用 Hexo + GitHub Pages 搭一个博客</span>
+      </a>
+    
+  </nav>
+
+</article>
+
+    </div>
+  </main>
+
+  
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-rule" aria-hidden="true"></div>
+
+    <div class="footer-inner">
+      <p class="footer-copy">
+        © <span class="footer-since">2026</span>
+        <span class="footer-owner">blueelves</span>
+      </p>
+
+      <div class="footer-links">
+        
+          <a href="https://github.com/blueelves" target="_blank" rel="noopener noreferrer">GitHub</a>
+        
+        
+      </div>
+    </div>
+
+    <p class="footer-built">
+      Powered by <a href="https://hexo.io" target="_blank" rel="noopener noreferrer">Hexo</a>
+      · Theme <span class="neon-text">Neon</span>
+    </p>
+  </div>
+</footer>
+
+
+  <button class="to-top" id="to-top" aria-label="回到顶部" title="回到顶部">↑</button>
+
+  <script src="/js/neon.js" defer></script>
+</body>
+</html>

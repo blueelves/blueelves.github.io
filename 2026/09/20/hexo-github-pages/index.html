@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07070d">
+  <meta name="color-scheme" content="dark">
+
+  <title>用 Hexo + GitHub Pages 搭一个博客 · Blue</title>
+  <meta name="description" content="blueelves 的个人博客 —— 编程笔记、技术折腾与日常思考">
+  <meta name="keywords" content="编程, C++, Python, 算法, 笔记, 技术博客">
+  <meta name="author" content="blueelves">
+  <link rel="canonical" href="https://blueelves.github.io/2026/09/20/hexo-github-pages/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="用 Hexo + GitHub Pages 搭一个博客 · Blue">
+  <meta property="og:description" content="blueelves 的个人博客 —— 编程笔记、技术折腾与日常思考">
+  <meta property="og:url" content="https://blueelves.github.io/2026/09/20/hexo-github-pages/">
+  <meta property="og:site_name" content="Blue">
+
+  <!-- 图标（内置霓虹 SVG，无需外部资源） -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- 样式 -->
+  <link rel="stylesheet" href="/css/neon.css">
+
+  <!-- 主题主色注入 -->
+  <style>:root{--accent:#00f0ff;}</style>
+
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body class="is-post">
+
+  <!-- 背景层：网格 + 光晕 -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-aurora" aria-hidden="true">
+    <span class="aurora aurora-1"></span>
+    <span class="aurora aurora-2"></span>
+    <span class="aurora aurora-3"></span>
+  </div>
+
+  <header class="site-header" id="site-header">
+  <div class="wrap header-inner">
+
+    <a class="brand" href="/" aria-label="Blue 首页">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-text">Blue</span>
+    </a>
+
+    <nav class="nav" id="site-nav" aria-label="主导航">
+      
+        <a class="nav-link" href="/">首页</a>
+      
+        <a class="nav-link" href="/archives/">归档</a>
+      
+        <a class="nav-link" href="/categories/">分类</a>
+      
+        <a class="nav-link" href="/tags/">标签</a>
+      
+        <a class="nav-link" href="/about/">关于</a>
+      
+    </nav>
+
+    <button class="nav-toggle" id="nav-toggle" aria-label="打开菜单" aria-expanded="false" aria-controls="site-nav">
+      <span></span><span></span><span></span>
+    </button>
+
+  </div>
+</header>
+
+
+  <main class="main" id="main">
+    <div class="wrap">
+      
+
+<article class="post">
+
+  <header class="post-header">
+    <p class="post-kicker"><span class="prompt">&gt;</span> article</p>
+    <h1 class="post-title">用 Hexo + GitHub Pages 搭一个博客</h1>
+
+    <div class="post-meta">
+      <time datetime="2026-09-20T07:00:00.000Z">2026.09.20</time>
+      <span class="dot">·</span>
+      <span>1707 字 · 约 5 分钟</span>
+      
+        <span class="dot">·</span>
+        <span class="post-cats">
+          <a href="/categories/%E5%BB%BA%E7%AB%99/">建站</a>
+        </span>
+      
+      
+        <span class="dot">·</span>
+        <span class="post-updated">更新于 2026.09.28</span>
+      
+    </div>
+  </header>
+
+  
+    <details class="toc" open>
+      <summary><span class="toc-icon">≡</span> 目录</summary>
+      <div class="toc-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E9%80%89-Hexo"><span class="toc-text">一、为什么选 Hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%AE%89%E8%A3%85"><span class="toc-text">二、安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="toc-text">三、目录结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E7%BD%91%E7%AB%99%E5%9C%B0%E5%9D%80%E7%9A%84%E4%B8%A4%E4%B8%AA%E9%85%8D%E7%BD%AE%E9%A1%B9"><span class="toc-text">四、网站地址的两个配置项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%9C%AC%E5%9C%B0%E9%A2%84%E8%A7%88"><span class="toc-text">五、本地预览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8F"><span class="toc-text">六、部署方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E5%BC%8F-A%EF%BC%9AGitHub-Actions%EF%BC%88%E6%8E%A8%E8%8D%90%EF%BC%89"><span class="toc-text">方式 A：GitHub Actions（推荐）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E5%BC%8F-B%EF%BC%9A%E6%89%8B%E5%8A%A8%E6%8E%A8%E9%80%81-public-%E7%9B%AE%E5%BD%95"><span class="toc-text">方式 B：手动推送 public 目录</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-text">七、常见问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-text">小结</span></a></li></ol></div>
+    </details>
+  
+
+  <div class="post-content" id="post-content">
+    <p>记录一下这个博客从零到上线的完整过程。整体只需要三样东西：<strong>Node.js</strong>、<strong>一个 GitHub 仓库</strong>、<strong>一套静态站点生成器</strong>。</p>
+<h2 id="一、为什么选-Hexo"><a href="#一、为什么选-Hexo" class="headerlink" title="一、为什么选 Hexo"></a>一、为什么选 Hexo</h2><p>静态博客生成器有很多，选 Hexo 的理由很朴素：</p>
+<ul>
+<li>中文文档齐全，社区活跃</li>
+<li>生成纯静态 HTML，托管成本为零</li>
+<li>写文章就是写 Markdown，不需要数据库</li>
+</ul>
+<p>同类还有 Hugo（更快）、Jekyll（GitHub 原生支持），但 Hexo 的插件生态和主题数量对新手最友好。</p>
+<h2 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 初始化一个 Hexo 项目（在当前目录）</span></span><br><span class="line">npx hexo init .</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装依赖</span></span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+
+<p>如果遇到 <code>npm install</code> 报 <code>EPERM: spawn</code>，通常是杀毒软件或权限问题；另外某些包的 <code>postinstall</code> 脚本在受限环境下会被拦截，可以加 <code>--ignore-scripts</code> 跳过（Hexo 全是纯 JS 包，跳过脚本不影响使用）：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install --ignore-scripts</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、目录结构"><a href="#三、目录结构" class="headerlink" title="三、目录结构"></a>三、目录结构</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">blog/</span><br><span class="line">├── _config.yml          # 站点配置（标题、网址、主题…）</span><br><span class="line">├── package.json</span><br><span class="line">├── scaffolds/           # 新建文章时的模板</span><br><span class="line">├── source/              # 你的内容</span><br><span class="line">│   ├── _posts/          # ← 文章写这里</span><br><span class="line">│   └── about/           # 独立页面</span><br><span class="line">└── themes/</span><br><span class="line">    └── neon/            # 自定义主题</span><br><span class="line">        ├── _config.yml  # 主题配置</span><br><span class="line">        ├── layout/      # EJS 模板</span><br><span class="line">        └── source/      # CSS / JS / 图片</span><br></pre></td></tr></table></figure>
+
+<p><strong>关键认知</strong>：<code>source/</code> 是内容，<code>themes/</code> 是外观，<code>_config.yml</code> 是开关。三者互不干扰。</p>
+<h2 id="四、网站地址的两个配置项"><a href="#四、网站地址的两个配置项" class="headerlink" title="四、网站地址的两个配置项"></a>四、网站地址的两个配置项</h2><p>这是<strong>最容易出错</strong>的地方。<code>_config.yml</code> 里的 <code>url</code> 和 <code>root</code> 必须和 GitHub Pages 的实际地址一致，否则 CSS 和 JS 全部 404，页面会变成一堆没有样式的纯文字。</p>
+<p>GitHub Pages 有两种站点：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>仓库名要求</th>
+<th>访问地址</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>用户主页站</td>
+<td>必须叫 <code>&lt;用户名&gt;.github.io</code></td>
+<td><code>https://用户名.github.io/</code></td>
+</tr>
+<tr>
+<td>项目站</td>
+<td>其他任意名字</td>
+<td><code>https://用户名.github.io/仓库名/</code></td>
+</tr>
+</tbody></table>
+<p>对应配置：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 用户主页站（仓库名 = &lt;用户名&gt;.github.io）</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">https://blueelves.github.io</span></span><br><span class="line"><span class="attr">root:</span> <span class="string">/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 项目站（仓库名 = myblog）</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">https://blueelves.github.io</span></span><br><span class="line"><span class="attr">root:</span> <span class="string">/myblog/</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>⚠️ <strong>关键</strong>：仓库名必须<strong>正好等于</strong> <code>&lt;用户名&gt;.github.io</code>，才会被识别成用户主页站。哪怕只差一个字母（例如用户名是 <code>blueelves</code>，仓库却叫 <code>blueelev.github.io</code>），GitHub 也会把它当成普通<strong>项目站</strong>，此时地址必须带仓库名后缀，<code>root</code> 也要跟着改成 <code>/仓库名/</code>。</p>
+</blockquote>
+<h2 id="五、本地预览"><a href="#五、本地预览" class="headerlink" title="五、本地预览"></a>五、本地预览</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 启动本地服务器，默认 http://localhost:4000</span></span><br><span class="line">hexo server</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只生成静态文件到 public/</span></span><br><span class="line">hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>改完文章保存，刷新浏览器就能看到效果（<code>server</code> 模式下会热更新）。</p>
+<h2 id="六、部署方式"><a href="#六、部署方式" class="headerlink" title="六、部署方式"></a>六、部署方式</h2><h3 id="方式-A：GitHub-Actions（推荐）"><a href="#方式-A：GitHub-Actions（推荐）" class="headerlink" title="方式 A：GitHub Actions（推荐）"></a>方式 A：GitHub Actions（推荐）</h3><p>在仓库里放一个工作流文件 <code>.github/workflows/pages.yml</code>，每次 <code>git push</code> 后 GitHub 自动构建并发布。</p>
+<p>需要在仓库 <strong>Settings → Pages → Source</strong> 里选择 <strong>GitHub Actions</strong>。</p>
+<h3 id="方式-B：手动推送-public-目录"><a href="#方式-B：手动推送-public-目录" class="headerlink" title="方式 B：手动推送 public 目录"></a>方式 B：手动推送 public 目录</h3><p>把生成好的 <code>public/</code> 目录内容推到 <code>gh-pages</code> 分支。用 <code>hexo-deployer-git</code> 插件一条命令搞定：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>但这需要本机装好 git。</p>
+<h2 id="七、常见问题"><a href="#七、常见问题" class="headerlink" title="七、常见问题"></a>七、常见问题</h2><table>
+<thead>
+<tr>
+<th>现象</th>
+<th>原因</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>页面没有样式</td>
+<td><code>root</code> 配错了</td>
+<td>检查仓库是用户站还是项目站</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Pages 的 Source 没选对</td>
+<td>设为 GitHub Actions 或 gh-pages 分支</td>
+</tr>
+<tr>
+<td>改了主题没变化</td>
+<td>浏览器缓存</td>
+<td>硬刷新 <code>Ctrl + F5</code></td>
+</tr>
+<tr>
+<td>中文标题乱码</td>
+<td>编码问题</td>
+<td>确保文件是 UTF-8</td>
+</tr>
+<tr>
+<td>Actions 构建失败</td>
+<td>缺 lock 文件</td>
+<td>本地跑一次 <code>npm install</code> 生成 <code>package-lock.json</code> 并提交</td>
+</tr>
+</tbody></table>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>搭博客这件事，<strong>最难的不是技术，而是开始写</strong>。把架子搭好之后，剩下的事只有一件：持续地写。</p>
+<hr>
+<p><em>下一篇打算写写这套霓虹主题的实现细节。</em></p>
+
+  </div>
+
+  
+    <div class="post-tags">
+      
+        <a class="tag" href="/tags/Hexo/">#Hexo</a>
+      
+        <a class="tag" href="/tags/GitHub-Pages/">#GitHub Pages</a>
+      
+        <a class="tag" href="/tags/%E9%83%A8%E7%BD%B2/">#部署</a>
+      
+    </div>
+  
+
+  <nav class="post-nav" aria-label="上下篇">
+    
+      <a class="post-nav-item prev" href="/2026/09/26/two-pointers/">
+        <span class="post-nav-label">← 上一篇</span>
+        <span class="post-nav-title">双指针：从两数之和到三数之和</span>
+      </a>
+    
+
+    
+      <span class="post-nav-item is-empty"></span>
+    
+  </nav>
+
+</article>
+
+    </div>
+  </main>
+
+  
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-rule" aria-hidden="true"></div>
+
+    <div class="footer-inner">
+      <p class="footer-copy">
+        © <span class="footer-since">2026</span>
+        <span class="footer-owner">blueelves</span>
+      </p>
+
+      <div class="footer-links">
+        
+          <a href="https://github.com/blueelves" target="_blank" rel="noopener noreferrer">GitHub</a>
+        
+        
+      </div>
+    </div>
+
+    <p class="footer-built">
+      Powered by <a href="https://hexo.io" target="_blank" rel="noopener noreferrer">Hexo</a>
+      · Theme <span class="neon-text">Neon</span>
+    </p>
+  </div>
+</footer>
+
+
+  <button class="to-top" id="to-top" aria-label="回到顶部" title="回到顶部">↑</button>
+
+  <script src="/js/neon.js" defer></script>
+</body>
+</html>
